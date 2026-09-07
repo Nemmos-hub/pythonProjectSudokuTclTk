@@ -1,0 +1,1 @@
+apre l'immagine sudoku_bn.jpg e prova a risolverlo
