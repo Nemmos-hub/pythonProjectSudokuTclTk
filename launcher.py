@@ -6,7 +6,7 @@ import numpy as np
 import easyocr
 
 # --- Configurazione ---
-NOME_FILE_TCL = "sudoku14.tcl"
+NOME_FILE_TCL = "sudoku15.tcl"
 PATH_DOWNLOAD = "" #"/storage/emulated/0/Download"
 PERCORSO_ASSOLUTO = os.path.join(PATH_DOWNLOAD, NOME_FILE_TCL)
 

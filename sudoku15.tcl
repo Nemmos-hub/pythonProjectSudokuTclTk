@@ -3,7 +3,7 @@
 
 	set w ""
 
-	wm title . "Sudoku 1.4"
+	wm title . "Sudoku 1.5"
 	wm iconname . "sudoku"
 
 	if { [winfo exist .buttons] == 0 } {
@@ -91,9 +91,9 @@
 					{0 0 7. 0 3. 0 0 0 0}
 					{0 6. 0 0 0 5. 0 0 0}}
 
-# livello TRUE devil				
+# livello TRUE devil
 	set filename6 "TRUE devil.sdk"
-	set sudoku6 {	
+	set sudoku6 {
 	{3. 0 5. 6. 0 0 0 0 0}
 	{0 0 6. 0 0 4. 9. 5. 0}
 	{0 4. 0 8. 0 0 0 0 3.}
@@ -103,6 +103,19 @@
 	{5. 0 0 0 0 2. 0 3. 0}
 	{0 3. 7. 1. 0 0 8. 0 0}
 	{0 0 0 0 0 9. 1. 0 2.}}
+
+# livello TRUE devil
+	set filename7 "devil 7.sdk"
+	set sudoku7 {
+	{0 0 0 2. 0 0 0 0 0}
+	{0 0 5. 0 7. 0 0 0 2.}
+	{0 0 0 0 6. 4. 1. 0 7.}
+	{0 0 0 0 0 0 7. 5. 0}
+	{2. 0 0 3. 0 5. 0 0 8.}
+	{0 4. 1. 0 0 0 0 0 0}
+	{8. 0 3. 1. 5. 0 0 0 0}
+	{9. 0 0 0 3. 0 6. 0 0}
+	{0 0 0 0 0 2. 0 0 0}}
 
 
 # livello zero
@@ -138,7 +151,7 @@
 
 		set sudoku $up_sudoku
 		set filename $up_filename
-		
+
 		newtext $up_filename
 
 			$w.buttons.solve configure -state normal -text " Solve " -command "trysudoku"
@@ -177,7 +190,7 @@
 				newij $i $j 0 0
 
 				if { [maybe $i $j $ij] == -1 } {
-				
+
 					puts "bad: ($i,$j)=$ij <$trueij>"
 					return -1
 				}
@@ -386,7 +399,7 @@
 		for { set i 0 } { $i<9 } {incr i} {
 			for { set j 0 } { $j<9 } {incr j} {
 
-				set ij [lindex [lindex $sudoku $i] $j] 
+				set ij [lindex [lindex $sudoku $i] $j]
 
 				if { [lsearch -regexp $ij 0] == 0 } {
 
@@ -397,7 +410,7 @@
 					set trylist [maylist $i $j]
 
 					puts "($i,$j) $trylist "
-		
+
 					# puts -nonewline "($i,$j) "
 					# puts -nonewline "[maylist $i $j]"
 					# puts ""
@@ -446,7 +459,7 @@
 
 			for { set j $minj } { $j<$maxj } {incr j} {
 
-			set ij [lindex [lindex $sudoku $i] $j] 
+			set ij [lindex [lindex $sudoku $i] $j]
 
 			if { [lsearch -regexp $ij 0] == 0 } {
 
@@ -468,7 +481,7 @@
 			 (($ri == 3) && ($rj == 3)) } {
 
 			$w.text tag configure $tags -background #eee
-		
+
 		} else {
 
 			$w.text tag configure $tags -background {}
@@ -525,7 +538,7 @@
 			set i [lindex [split $where ,] 0]
 			set j [lindex [split $where ,] 1]
 
-			set ij [lindex [lindex $sudoku $i] $j] 
+			set ij [lindex [lindex $sudoku $i] $j]
 
 			if { [string index $ij 0] == 0 } {
 
@@ -736,7 +749,7 @@
 
 	proc allrangerowcol {} {
 
-		global sudoku magic 
+		global sudoku magic
 
 		puts "allrangerowcol:"
 
@@ -791,7 +804,7 @@
 	proc trysudoku {} {
 
 
-		global w 
+		global w
 		global debug whichproc nextproc tryrowcol
 
 		$w.buttons.solve configure -command stop -text " Stop "
@@ -816,16 +829,16 @@
 
 			puts "now: $news"
 
-			if { [issudoku] == 0 } { 
+			if { [issudoku] == 0 } {
 
 				puts "END."
 				set whichproc 0
 				set branchid 0
 				$w.buttons.solve configure -state disabled -text " End "
 
-			} else { 
+			} else {
 
-				if { $debug } { 
+				if { $debug } {
 
 					set whichproc 0
 					set nextproc 2
@@ -844,20 +857,20 @@
 			# puts ">>>>>>>> 2  allranges <<<<<<<<<<<<<<"
 
 			set news 0
-			if { [incr news [allranges]] == 0 } { 
+			if { [incr news [allranges]] == 0 } {
 
 				puts "now: $news"
 
-				if { [issudoku] == 0 } { 
-						
+				if { [issudoku] == 0 } {
+
 					puts "END."
 					set whichproc 0
 					set branchid 0
 					$w.buttons.solve configure -state disabled -text " End "
 
-				} else { 
+				} else {
 
-					if { $debug } { 
+					if { $debug } {
 
 						set whichproc 0
 						set nextproc 3
@@ -873,7 +886,7 @@
 
 				puts "now: $news"
 
-				if { $debug } { 
+				if { $debug } {
 
 					set whichproc 0
 					set nextproc 1
@@ -891,9 +904,9 @@
 
 			# puts ">>>>>>>> 3  allrangerowcol <<<<<<<<<<<<<<"
 
-			if { $tryrowcol == 0 } { 
+			if { $tryrowcol == 0 } {
 
-				if { $debug } { 
+				if { $debug } {
 
 					set whichproc 0
 					set nextproc  4
@@ -908,12 +921,12 @@
 				set tryrowcol 1
 
 				continue
-			} 
+			}
 
 			set tryrowcol 0
 
 			set news 0
-			if { [incr news [allrangerowcol]] == 0 } { 
+			if { [incr news [allrangerowcol]] == 0 } {
 
 				puts "now: $news"
 
@@ -927,7 +940,7 @@
 
 				puts "now: $news"
 
-				if { $debug } { 
+				if { $debug } {
 
 					set whichproc 0
 					set nextproc  1
@@ -948,7 +961,7 @@
 			branch
 
 
-			if { $debug } { 
+			if { $debug } {
 
 				set whichproc 0
 				set nextproc  1
@@ -967,7 +980,7 @@
 
 	proc branch {} {
 
-		global w 
+		global w
 		global magic filename tryrowcol
 		global BRi BRj BRmay branchid
 
@@ -986,7 +999,7 @@
 #			save_sudoku $filename.BR
 
 			set BRsudoku $sudoku
-		
+
 			foreach id [array names magic] {
 
 				puts "BR=$id VAL=$magic($id) LEN=[llength $magic($id)]"
@@ -1001,7 +1014,7 @@
 
 
 					puts "1st BRANCING i=$BRi j=$BRj may=<$may>"
-				
+
 					$w.text tag configure full -background green
 					update idletasks
 
@@ -1016,7 +1029,7 @@
 				}
 
 			}
-			
+
 			incr branchid
 		}
 
@@ -1048,7 +1061,7 @@
 			set nextproc 4
 			$w.buttons.solve configure -command cont -text " Cont "
 		}}
-		
+
 	}
 
 	proc trysetrowcol {} {
@@ -1086,7 +1099,7 @@
 
 				set try 0
 			}
-		} 
+		}
 	}
 
 	proc tryall {} {
@@ -1094,7 +1107,7 @@
 		while { [allranges] > 0 } {
 
 			while { [allrowcoloums] > 0 } {}
-		} 
+		}
 	}
 
 	proc tryseq {} {
@@ -1106,7 +1119,7 @@
 			while { [allrowcoloums] > 0 } {}
 
 			set ranges [allranges]
-		} 
+		}
 	}
 
 	proc print {} {
@@ -1177,7 +1190,7 @@
 			puts "TMP: $env(TMP)"
 			set file [open $env(TMP)\\$name "w+"]
 		}
-		
+
 
 		puts $file $sudoku
 
@@ -1213,7 +1226,7 @@
 		if { $delete } {
 
 			if { [file exist $name] } {
-			
+
 				file delete $name
 
 			} else {
@@ -1239,7 +1252,7 @@
 			for { set j 0 } { $j<9 } {incr j} {
 
 				set ij [lindex [lindex $sudoku $i] $j]
-				
+
 				set tags "$i,"
 				lappend tags "$j;"
 				lappend tags "$i,$j"
@@ -1281,7 +1294,7 @@
 			  (($ri == 3) && ($rj == 3)) } {
 
 			$w.text tag configure $Rtag -background #eee
-	
+
 		    } else {
 
 			$w.text tag configure $Rtag -background {}
@@ -1354,11 +1367,11 @@ proc sudokuPaste {} {
 #			puts "CHAL: $chal"
 
 #-------------------------------------------------------------------------
-			
+
 
 			foreach ch [split $chal " "] {
 
-					regsub $ch $elem "${ch}." new
+					regsub $ch $elem \""${ch}." new
 
 					set elem $new
 
@@ -1389,8 +1402,12 @@ proc newtext { filename } {
 		destroy $w.text
 	}
 
-	text $w.text -width 25 -height 12 -wrap word 
+	text $w.text -width 25 -height 12 -wrap word
 	pack $w.text -expand yes -fill both
+
+	bind $w.text <Button-1> {"break"}
+    bind $w.text <Button-2> {"break"}
+    bind $w.text <Button-3> {"break"}
 
 	bind $w.text <<Paste>> {sudokuPaste}
 	menu $w.text.menu -tearoff 0
@@ -1459,7 +1476,7 @@ proc sdkfile {operation} {
 
 	set filename [tk_getOpenFile -filetypes $types -parent .]
 
-	if { $filename != "" } { 
+	if { $filename != "" } {
 
 	set filename_list [split $filename .]
 	set filename_length [llength $filename_list]
@@ -1540,7 +1557,7 @@ proc sdkfile {operation} {
 		incr id
 	}
 
-	if { [issudoku] == 0 } { 
+	if { [issudoku] == 0 } {
 
 		set id end
 	}
@@ -1558,6 +1575,162 @@ proc sdkfile {operation} {
 	}
     }
 }
+
+
+
+# Array per memorizzare i percorsi delle immagini di errore
+array set error_images {}
+
+# Costruisce la griglia evidenziando le celle con -1 come "?"
+proc build_sudoku_with_errors {matrix} {
+    global w error_images
+    if { [winfo exists $w.text] } { destroy $w.text }
+    text $w.text -width 25 -height 12 -wrap word
+    pack $w.text -expand yes -fill both
+    styles
+    # Costruisci la griglia
+    for { set i 0 } { $i<9 } {incr i} {
+        for { set j 0 } { $j<9 } {incr j} {
+            set val [lindex $matrix $i $j]
+            set display ""
+            set tags {}
+            if { $val == 0 } {
+
+                set display " "
+                lappend tags "norm"
+
+            } elseif { $val == -1 } {
+                set display "?"
+                lappend tags "error"
+                set error_images($i,$j) "celle/cella_${i}_${j}_FAIL.png"
+            } elseif [regsub {\.} $val {} val] {
+                set display $val
+                lappend tags "big"
+            } else {
+                set display $val
+                lappend tags "norm"
+            }
+
+
+            $w.text insert end "$display " $tags
+            if { $j == 8 } { $w.text insert end "\n" }
+        }
+    }
+    # Configura il tag di errore
+    $w.text tag configure error -background yellow -font {Courier 14 bold}
+
+    # Binding per il tooltip (mouse sopra)
+    $w.text tag bind error <Enter> {
+        puts "ENTER:"
+        set pos [%W index "@%x,%y"]
+        puts "pos: $pos"
+        set index [split $pos '.']
+        set row [expr [lindex $index 0] -1]
+        set col [expr [expr [lindex $index 1] / 2] + 0]
+        puts "celle/cella_${row}_${col}_FAIL.png"
+        set img_file "celle/cella_${row}_${col}_FAIL.png"
+        if { [file exists $img_file] } {
+            if { [winfo exists .tooltip] } { destroy .tooltip }
+            toplevel .tooltip
+            wm title .tooltip "Cella ($row,$col)"
+            image create photo tooltip_img -file $img_file
+            label .tooltip.l -image tooltip_img
+	        text .tooltip.text -width 2 -height 1 -wrap word
+            pack .tooltip.l .tooltip.text
+            wm geometry .tooltip +%x+%y
+
+            focus .tooltip.text
+
+            # Binding: inserici cifra sul text per chiuderlo
+            # Ciclo da 0 a 9 per creare i binding dinamici
+            for {set i 0} {$i <= 9} {incr i} {
+                bind .tooltip.text <Key-$i> "
+                    %W insert insert $i
+                    puts {CHAR: $i}
+
+                    set pos \[%W index \"@%x,%y\"\]
+                    puts \"pos: \$pos\"
+
+                    set index \[split \$pos \".\"\]
+                    set row \[lindex \$index 0\]
+                    set col \[expr {(\[lindex \$index 1\] / 2) + 1}\]
+                    puts \"UPDATE: \$row \$col - $i\"
+                    update_cell \$row \$col $i
+
+                    set tooltip_id \[after 500 \"if {\[winfo exists .tooltip\]} { destroy .tooltip }\"\]
+
+                    puts \"DESTROY:\"
+
+                "
+            }
+
+
+            # Binding: clicca sul tooltip per chiuderlo
+            bind .tooltip <ButtonPress-1> {
+
+                puts "DESTROY XXX:"
+                # {\[winfo exists .tooltip\]} { destroy .tooltip }
+            }
+
+            # Memorizza il timer per chiuderlo dopo 10 secondi
+            set tooltip_id [after 10000 "if {\[winfo exists .tooltip\]} { destroy .tooltip }"]
+        } else {
+            puts "NOT EXIST: $img_file"
+        }
+    }
+    # Nascondi tooltip quando il mouse esce
+    $w.text tag bind error <Leave> {
+        # Ritardo prima di chiudere, per permettere al mouse di andare sul tooltip
+        puts "LEAVE:"
+        #after 1000 { hide_tooltip }
+    }
+}
+
+# Aggiorna una singola cella dopo la correzione
+proc update_cell {i j value} {
+    global w sudoku
+
+    # righe da 1 colonne da 0
+
+    if { [winfo exists $w.text] } {
+        set char_index "${i}.[expr ((${j}-1) * 2)]"
+        puts "char_index: $char_index"
+        # Sostituisci il carattere
+        $w.text delete $char_index
+        $w.text insert $char_index $value
+        # Rimuovi il tag error e aggiungi big
+        $w.text tag remove error $char_index
+        $w.text tag add big $char_index
+
+        # aggiorna sudoku
+
+        set i [expr $i - 1]
+        set j [expr $j - 1]
+        puts "($i,$j): $value"
+   		set tmp [lreplace [lindex  $sudoku $i] $j $j $value]
+   		puts "tmp: $tmp"
+		set sudoku [lreplace $sudoku $i $i $tmp]
+
+        puts "SUDOKU: ($i,$j) $value"
+        set error 0
+        for { set i 0 } { $i<9 } {incr i} {
+            for { set j 0 } { $j<9 } {incr j} {
+                set val [lindex $sudoku $i $j]
+                if { $val == -1 } {
+                    incr error
+                }
+            }
+        }
+        puts "SUDOKU: error $error"
+
+        if ! $error {
+            print
+            puts "SUDOKU: command -> trysudoku"
+    		$w.buttons.solve configure -command trysudoku -text "Solve" -state normal
+        }
+    }
+}
+
 
 
 #
@@ -1578,7 +1751,7 @@ set debug     0
 #puts "1 $argv"
 
 set filename $filename6
-set sudoku $sudoku6
+set sudoku $sudoku7
 
 newtext $filename
 
