@@ -17,13 +17,27 @@ ocr_reader = None
 def get_ocr_reader():
     global ocr_reader
     if ocr_reader is None:
-        ocr_reader = easyocr.Reader(['en'])  # 'en' per numeri
+        ocr_reader = easyocr.Reader(['en'], gpu=True)  # 'en' per numeri
     return ocr_reader
 
 def process_image(img):
     """
     Rileva la griglia Sudoku e restituisce una matrice 9x9 di numeri.
     """
+    # --- Rimozione sfondo (simile a Paint) ---
+    if False:
+        # Converti in HSV per isolare lo sfondo bianco (se è bianco)
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        # Definisci intervallo per bianco (valori approssimativi)
+        lower_white = np.array([0, 0, 200])
+        upper_white = np.array([180, 30, 255])
+        mask = cv2.inRange(hsv, lower_white, upper_white)
+        # Inverti la maschera per ottenere i pixel non bianchi
+        mask = cv2.bitwise_not(mask)
+        # Applica la maschera
+        img = cv2.bitwise_and(img, img, mask=mask)
+        cv2.imwrite(f"xxx.jpg", img)
+
     # Ridimensiona se troppo piccola
     h, w = img.shape[:2]
     if w < 300 or h < 300:
@@ -160,6 +174,10 @@ def process_image(img):
             #if np.mean(cell) > 127:
             #    cell_th = 255 - cell_th
 
+            # Dilatazione per ispessire i tratti
+            #kernel = np.ones((2, 2), np.uint8)
+            #cell_th = cv2.dilate(cell_th, kernel, iterations=1)
+
             # Calcola area nera per decidere se c'è un numero
             if np.sum(cell_th) > 0.2 * cell_w * cell_h * 255:
                 #print(f'cell({i},{j}) # {np.sum(cell_th)} > {0.08 * cell_w * cell_h * 255}')
@@ -174,23 +192,25 @@ def process_image(img):
                         digit = int(result[0][1])
                         print(f'cell({i},{j}) -> {digit}')
                         sudoku_matrix[i][j] = digit
-                        cv2.imwrite(f"cella_{i}_{j}_{digit}.jpg", cell_th)
+                        cv2.imwrite(f"celle/cella_{i}_{j}_{digit}.png", cell_th)
 
+                        #update_tcl_sudoku(sudoku_matrix, tcl, "...")
 
                     except Exception as e:
                         print(f'int: {e}')
                         pass
                 else:
-                    cv2.imwrite(f"cella_{i}_{j}_FAIL.jpg", cell_th)
+                    sudoku_matrix[i][j] = -1
+                    cv2.imwrite(f"celle/cella_{i}_{j}_FAIL.png", cell_th)
                     print(f'cell({i},{j}): readtext FAIL')
             else:
                 # La cella è considerata vuota, salviamo l'immagine per controllo
-                cv2.imwrite(f"cella_{i}_{j}_vuota.jpg", cell_th)
+                cv2.imwrite(f"celle/cella_{i}_{j}_vuota.png", cell_th)
                 print(f'cell({i},{j}): VUOTA')
 
     for ii in range(9):
         for jj in range(9):
-            print(f'{sudoku_matrix[ii][jj]}', end='')
+            print(f'{sudoku_matrix[ii][jj] if sudoku_matrix[ii][jj] >= 0 else '?'}', end='')
         print('')
     print('')
 
@@ -205,9 +225,11 @@ def update_tcl_sudoku(matrix, tcl_interp, nome="scansionato"):
         for row in matrix
     ) + "}}"
     tcl_interp.eval(f"set sudoku {tcl_list}")
+    tcl_interp.eval(f"set matrix {tcl_list}")
     tcl_interp.eval(f'set filename "{nome}"')
-    tcl_interp.eval('newtext "' + nome + '"')
-    messagebox.showinfo("Successo", "Puzzle importato correttamente!")
+    #tcl_interp.eval('newtext "' + nome + '"')
+    tcl_interp.eval('build_sudoku_with_errors $matrix')
+    #messagebox.showinfo("Successo", "Puzzle importato correttamente!")
 
 def scan_camera():
     """Acquisisce un'immagine dalla webcam e la processa."""
@@ -231,6 +253,18 @@ def scan_camera():
 def load_image_file():
     """Apre un file dialog per selezionare un'immagine e la processa."""
     try:
+
+        matrix = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+        update_tcl_sudoku(matrix, tcl, "loading...")
+
         file_path = filedialog.askopenfilename(
             title="Seleziona un'immagine",
             filetypes=[("Immagini", "*.jpg *.jpeg *.png *.bmp *.tiff")]
@@ -278,5 +312,6 @@ if __name__ == "__main__":
     tcl.eval('button .buttons2.scan -text "Scansiona" -command scan_camera_py')
     tcl.eval('button .buttons2.loadimg -text "Carica immagine" -command load_image_py')
     tcl.eval('pack .buttons2.scan .buttons2.loadimg -side left -expand 1')
+
 
     root.mainloop()

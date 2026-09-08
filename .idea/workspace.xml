@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25c022b8-b86e-41fe-9c2a-e6665a35f453" name="Changes" comment="sudoku15.tcl" />
+    <list default="true" id="25c022b8-b86e-41fe-9c2a-e6665a35f453" name="Changes" comment="migliorata la process_image">
+      <change beforePath="$PROJECT_DIR$/launcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/launcher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sudoku15.tcl" beforeDir="false" afterPath="$PROJECT_DIR$/sudoku15.tcl" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,8 +35,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/medde/PycharmProjects/pythonProjectSudokuTclTk/launcher - Copy.py",
-    "two.files.diff.last.used.file": "C:/Users/medde/PycharmProjects/pythonProjectSudokuTclTk/launcher - Copy.py"
+    "last_opened_file_path": "C:/Users/medde/PycharmProjects/pythonProjectSudokuTclTk/sudoku15 - LAST.tcl",
+    "two.files.diff.last.used.file": "C:/Users/medde/PycharmProjects/pythonProjectSudokuTclTk/sudoku15 - LAST.tcl"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -68,7 +71,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788856990493</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="migliorata la process_image">
+      <option name="closed" value="true" />
+      <created>1788857482919</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1788857482919</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -88,6 +99,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="README.md" />
     <MESSAGE value="sudoku15.tcl" />
-    <option name="LAST_COMMIT_MESSAGE" value="sudoku15.tcl" />
+    <MESSAGE value="migliorata la process_image" />
+    <option name="LAST_COMMIT_MESSAGE" value="migliorata la process_image" />
   </component>
 </project>

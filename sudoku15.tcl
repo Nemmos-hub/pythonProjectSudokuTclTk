@@ -1584,21 +1584,24 @@ array set error_images {}
 # Costruisce la griglia evidenziando le celle con -1 come "?"
 proc build_sudoku_with_errors {matrix} {
     global w error_images
+
+    $w.buttons.solve configure -command trysudoku -text "Solve" -state disabled
+
+
     if { [winfo exists $w.text] } { destroy $w.text }
     text $w.text -width 25 -height 12 -wrap word
     pack $w.text -expand yes -fill both
     styles
+
     # Costruisci la griglia
-    for { set i 0 } { $i<9 } {incr i} {
-        for { set j 0 } { $j<9 } {incr j} {
+    for { set i 0 } { $i<9 } {incr i } {
+        for { set j 0 } { $j<9 } {incr j } {
             set val [lindex $matrix $i $j]
             set display ""
             set tags {}
             if { $val == 0 } {
-
                 set display " "
                 lappend tags "norm"
-
             } elseif { $val == -1 } {
                 set display "?"
                 lappend tags "error"
@@ -1610,14 +1613,41 @@ proc build_sudoku_with_errors {matrix} {
                 set display $val
                 lappend tags "norm"
             }
-
+            # ---- Aggiungi i tag del blocco 3x3 ----
+            set ri [expr ($i/3)*3]
+            set rj [expr ($j/3)*3]
+            set Rtag "$ri-$rj"
+            lappend tags $Rtag
 
             $w.text insert end "$display " $tags
             if { $j == 8 } { $w.text insert end "\n" }
         }
     }
+
     # Configura il tag di errore
     $w.text tag configure error -background yellow -font {Courier 14 bold}
+
+    # ---- Colora i blocchi 3x3 (come in buildsudoku) ----
+    for { set ri 0 } { $ri<9 } {incr ri 3 } {
+        for { set rj 0 } { $rj<9 } {incr rj 3 } {
+            set Rtag "$ri-$rj"
+            if { (($ri == 0) || ($ri == 6)) &&
+                  (($rj == 0) || ($rj == 6)) ||
+                  (($ri == 3) && ($rj == 3)) } {
+                $w.text tag configure $Rtag -background #eee
+            } else {
+                $w.text tag configure $Rtag -background {}
+            }
+        }
+    }
+
+    # (Opzionale) Abbassa i tag dei blocchi sotto gli altri
+    for { set ri 0 } { $ri<9 } {incr ri 3 } {
+        for { set rj 0 } { $rj<9 } {incr rj 3 } {
+            $w.text tag lower "$ri-$rj"
+        }
+    }
+
 
     # Binding per il tooltip (mouse sopra)
     $w.text tag bind error <Enter> {
@@ -1657,23 +1687,26 @@ proc build_sudoku_with_errors {matrix} {
                     puts \"UPDATE: \$row \$col - $i\"
                     update_cell \$row \$col $i
 
-                    set tooltip_id \[after 500 \"if {\[winfo exists .tooltip\]} { destroy .tooltip }\"\]
+                    puts \"DESTROY: #tooltip\"
 
-                    puts \"DESTROY:\"
+                    set tooltip_id \[after 500 \"if {\[winfo exists .tooltip\]} {destroy .tooltip }\"\]
+
+                    puts \"DESTROY: end\"
 
                 "
             }
 
+            focus .tooltip.text
 
             # Binding: clicca sul tooltip per chiuderlo
             bind .tooltip <ButtonPress-1> {
 
-                puts "DESTROY XXX:"
-                # {\[winfo exists .tooltip\]} { destroy .tooltip }
+                puts "DESTROY: XXX exist: [winfo exists .tooltip]"
+                if {[winfo exists .tooltip]} { destroy .tooltip }
             }
 
             # Memorizza il timer per chiuderlo dopo 10 secondi
-            set tooltip_id [after 10000 "if {\[winfo exists .tooltip\]} { destroy .tooltip }"]
+            set tooltip_id_2 [after 10000 "if {\[winfo exists .tooltip\]} { destroy .tooltip }"]
         } else {
             puts "NOT EXIST: $img_file"
         }
@@ -1689,18 +1722,26 @@ proc build_sudoku_with_errors {matrix} {
 # Aggiorna una singola cella dopo la correzione
 proc update_cell {i j value} {
     global w sudoku
+	global debug whichproc nextproc tryrowcol magic
 
     # righe da 1 colonne da 0
 
     if { [winfo exists $w.text] } {
         set char_index "${i}.[expr ((${j}-1) * 2)]"
-        puts "char_index: $char_index"
+        set char_index_end "${i}.[expr ((${j}-1) * 2) + 2]"
+        puts "char_index: $char_index, $char_index_end"
         # Sostituisci il carattere
         $w.text delete $char_index
         $w.text insert $char_index $value
         # Rimuovi il tag error e aggiungi big
-        $w.text tag remove error $char_index
-        $w.text tag add big $char_index
+        $w.text tag remove "error" $char_index "$char_index + 2 chars"
+        if {$value == 0} {
+            $w.text delete $char_index
+            $w.text insert $char_index " "
+            $w.text tag add "norm" $char_index "$char_index + 2 chars"
+        } else {
+            $w.text tag add "big" $char_index "$char_index + 2 chars"
+        }
 
         # aggiorna sudoku
 
@@ -1723,12 +1764,19 @@ proc update_cell {i j value} {
         }
         puts "SUDOKU: error $error"
 
-        if ! $error {
+        if {! $error } {
             print
             puts "SUDOKU: command -> trysudoku"
+            array set magic ""
+			set branchid 0
+			set whichproc 1
+			set nextproc  0
+			set tryrowcol 1
     		$w.buttons.solve configure -command trysudoku -text "Solve" -state normal
         }
     }
+
+    puts "return: update_cell"
 }
 
 
