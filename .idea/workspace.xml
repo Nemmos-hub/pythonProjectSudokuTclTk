@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25c022b8-b86e-41fe-9c2a-e6665a35f453" name="Changes" comment="README.md">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/launcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/launcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sudoku14.tcl" beforeDir="false" afterPath="$PROJECT_DIR$/sudoku14.tcl" afterDir="false" />
-    </list>
+    <list default="true" id="25c022b8-b86e-41fe-9c2a-e6665a35f453" name="Changes" comment="sudoku15.tcl" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,7 +60,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788796071187</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Merge branch 'main' of README.md">
+      <option name="closed" value="true" />
+      <created>1788856990493</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1788856990493</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -83,6 +87,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="README.md" />
+    <MESSAGE value="sudoku15.tcl" />
+    <option name="LAST_COMMIT_MESSAGE" value="sudoku15.tcl" />
   </component>
 </project>
